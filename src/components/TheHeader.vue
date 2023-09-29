@@ -3,7 +3,7 @@
 </template>
 
 <style scoped>
-title {
+.title {
   width: 100%;
   background-color: #e3f2fd;
   text-align: center;
