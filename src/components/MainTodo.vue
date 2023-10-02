@@ -31,7 +31,7 @@ const addTodo = () => {
   <div class="box_list">
     <div class="todo_list">
       <div class="todo">
-        <imput type="checkbox" class="check" /><label>ＴＯＤＯ1</label>
+        <input type="checkbox" class="check" /><label>ＴＯＤＯ1</label>
       </div>
       <div class="btns">
         <button class="btn green">編</button>
