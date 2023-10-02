@@ -28,6 +28,26 @@ const addTodo = () => {
     />
     <button class="btn" @click="addTodo">追加</button>
   </div>
+  <div class="box_list">
+    <div class="todo_list">
+      <div class="todo">
+        <imput type="checkbox" class="check" /><label>ＴＯＤＯ1</label>
+      </div>
+      <div class="btns">
+        <button class="btn green">編</button>
+        <button class="btn pink">削</button>
+      </div>
+    </div>
+    <div class="todo_list">
+      <div class="todo">
+        <input type="checkbox" class="check" /><label>ＴＯＤＯ2</label>
+      </div>
+      <div class="btns">
+        <button class="btn green">編</button>
+        <button class="btn pink">削</button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <style scoped>
@@ -51,5 +71,43 @@ const addTodo = () => {
   color: #fff;
   text-align: center;
   font-size: 14px;
+}
+.box_list {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.todo_list {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.todo {
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  padding: 12px;
+  width: 300px;
+}
+
+.check {
+  border: 1px solid red;
+  transform: scale(1.6);
+  margin: 0 16px 2px 6px;
+}
+
+.btns {
+  display: flex;
+  gap: 4px;
+}
+
+.green {
+  background-color: #00c853;
+}
+
+.pink {
+  background-color: #ff4081;
 }
 </style>
