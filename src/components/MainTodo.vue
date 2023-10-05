@@ -1,11 +1,10 @@
 <script setup>
 import { ref } from 'vue';
 const todoRef = ref('');
-const todoListRef = ref([
-  { id: 1, task: 'TODO1' },
-  { id: 2, task: 'TODO2' },
-  { id: 3, task: 'TODO3' },
-]);
+const todoListRef = ref([]);
+const ls = localStorage.todoList;
+todoListRef.value = ls ? JSON.parse(ls) : [];
+
 const addTodo = () => {
   //IDを簡易的にミリ秒で登録する
   const id = new Date().getTime();
@@ -19,6 +18,13 @@ const addTodo = () => {
   //登録後は入力欄を空にする
   todoRef.value = '';
 };
+const showTodo = (id) => {
+  const todo = todoListRef.value.find((todo) => todo.id === id);
+  todoRef.value = todo.task;
+  isEditRef.value = true;
+};
+const isEditRef = ref(false);
+const editTodo = () => {};
 </script>
 
 <template>
@@ -29,7 +35,8 @@ const addTodo = () => {
       v-model="todoRef"
       placeholder="＋ ＴＯＤＯを入力"
     />
-    <button class="btn" @click="addTodo">追加</button>
+    <button class="btn green" @click="editTodo" v-if="isEditRef">変更</button>
+    <button class="btn" @click="addTodo" v-else>追加</button>
   </div>
   <div class="box_list">
     <div class="todo_list" v-for="todo in todoListRef" :key="todo.id">
@@ -38,7 +45,7 @@ const addTodo = () => {
         <label>{{ todo.task }}</label>
       </div>
       <div class="btns">
-        <button class="btn green">編</button>
+        <button class="btn green" @click="showTodo(todo.id)">編</button>
         <button class="btn pink">削</button>
       </div>
     </div>
