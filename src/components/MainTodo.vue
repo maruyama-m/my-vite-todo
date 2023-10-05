@@ -18,13 +18,43 @@ const addTodo = () => {
   //登録後は入力欄を空にする
   todoRef.value = '';
 };
+
+const isEditRef = ref(false);
+let editId = -1;
+
 const showTodo = (id) => {
   const todo = todoListRef.value.find((todo) => todo.id === id);
   todoRef.value = todo.task;
   isEditRef.value = true;
+  editId = id;
 };
-const isEditRef = ref(false);
-const editTodo = () => {};
+
+const editTodo = () => {
+  //編集対象となるTODOを取得
+  const todo = todoListRef.value.find((todo) => todo.id === editId);
+  //TODOリストから編集対象のインデックスを取得
+  const idx = todoListRef.value.findIndex((todo) => todo.id === editId);
+  //taskを編集後のTODOで置き換え
+  todo.task = todoRef.value;
+  //splice関数でインデックスを元に対象オブジェクトを置き換え
+  todoListRef.value.splice(idx, 1, todo);
+  //ローカルストレージに保存
+  localStorage.todoList = JSON.stringify(todoListRef.value);
+  isEditRef.value = false; //編集モードを解除
+  editIndex = -1; //IDを初期値に戻す
+  todoRef.value = '';
+};
+
+const deleteTodo = (id) => {
+  const todo = todoListRef.value.find((todo) => todo.id === id);
+  const idx = todoListRef.value.findIndex((todo) => todo.id === id);
+
+  const delMsg = '「' + todo.task + '」を削除しますか？';
+  if (!confirm(delMsg)) return;
+
+  todoListRef.value.splice(idx, 1);
+  localStorage.todoList = JSON.stringify(todoListRef.value);
+};
 </script>
 
 <template>
@@ -46,7 +76,7 @@ const editTodo = () => {};
       </div>
       <div class="btns">
         <button class="btn green" @click="showTodo(todo.id)">編</button>
-        <button class="btn pink">削</button>
+        <button class="btn pink" @click="deleteTodo(todo.id)">削</button>
       </div>
     </div>
   </div>
