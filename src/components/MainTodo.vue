@@ -88,8 +88,10 @@ const changeCheck = (id) => {
 }
 .box_list {
   margin-top: 20px;
+  margin-left: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 4px;
 }
 
