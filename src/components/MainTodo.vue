@@ -1,62 +1,36 @@
 <script setup>
 import { ref } from 'vue';
 import { useTodoList } from '/src/composables/useTodoList.js';
+
 const todoRef = ref('');
-const todoListRef = ref([]);
-const ls = localStorage.todoList;
-todoListRef.value = ls ? JSON.parse(ls) : [];
-
-const addTodo = () => {
-  //IDを簡易的にミリ秒で登録する
-  const id = new Date().getTime();
-
-  //配列に入力TODOを格納
-  todoListRef.value.push({ id: id, task: todoRef.value });
-
-  //ローカルストレージに登録
-  localStorage.todoList = JSON.stringify(todoListRef.value);
-
-  //登録後は入力欄を空にする
-  todoRef.value = '';
-};
-
 const isEditRef = ref(false);
-let editId = -1;
+const { todoListRef, add, show, edit, del, check } = useTodoList();
 
+//追加
+const addTodo = () => {
+  add(todoRef.value);
+  todoRef.value = '';
+};
+//編集
 const showTodo = (id) => {
-  const todo = todoListRef.value.find((todo) => todo.id === id);
-  todoRef.value = todo.task;
+  todoRef.value = show(id);
   isEditRef.value = true;
-  editId = id;
 };
 
+//変更
 const editTodo = () => {
-  //編集対象となるTODOを取得
-  const todo = todoListRef.value.find((todo) => todo.id === editId);
-  //TODOリストから編集対象のインデックスを取得
-  const idx = todoListRef.value.findIndex((todo) => todo.id === editId);
-  //taskを編集後のTODOで置き換え
-  todo.task = todoRef.value;
-  //splice関数でインデックスを元に対象オブジェクトを置き換え
-  todoListRef.value.splice(idx, 1, todo);
-  //ローカルストレージに保存
-  localStorage.todoList = JSON.stringify(todoListRef.value);
-  isEditRef.value = false; //編集モードを解除
-  editIndex = -1; //IDを初期値に戻す
+  edit(todoRef.value);
+  isEditRef.value = false;
   todoRef.value = '';
 };
 
+//削除
 const deleteTodo = (id) => {
-  //削除
-  //const todo = todoListRef.value.find((todo) => todo.id === id);
-  //const idx = todoListRef.value.findIndex((todo) => todo.id === id);
+  del(id);
+};
 
-  const { todo, idx } = useTodoList(id); //追加
-  const delMsg = '「' + todo.task + '」を削除しますか？';
-  if (!confirm(delMsg)) return;
-
-  todoListRef.value.splice(idx, 1);
-  localStorage.todoList = JSON.stringify(todoListRef.value);
+const changeCheck = (id) => {
+  check(id);
 };
 </script>
 
@@ -85,7 +59,7 @@ const deleteTodo = (id) => {
   </div>
 </template>
 
-<style scoped>
+<style>
 .box_input {
   margin-top: 20px;
 }
