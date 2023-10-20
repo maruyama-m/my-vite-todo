@@ -14,7 +14,7 @@ export const useTodoList = () => {
   // 新しいTODOを追加する関数
   const add = (task) => {
     const id = new Date().getTime();
-    todoListRef.value.push({ id: id, task: task });
+    todoListRef.value.push({ id: id, task: task, checked: false });
     // ローカルストレージにTODOリストを保存する
     localStorage.todoList = JSON.stringify(todoListRef.value);
   };
